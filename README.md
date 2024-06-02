@@ -1,7 +1,7 @@
-# Smart Tomato Farm
+# Energy Management System
 
 ## Introduction 
-- Energy Management System
+- A school energy management system 
 - Frontend : ReactJS
 - Backend : Node.JS (Express.JS), MongoDB, Adafruit
 
