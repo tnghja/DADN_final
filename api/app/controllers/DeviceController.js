@@ -1,4 +1,4 @@
-const {turnOnDevice, turnOffDevice} = require('../service/DeviceService');
+const {turnOnDevice, turnOffDevice, updateFanSpeed} = require('../service/DeviceService');
 
 const turnOn = async (req, res) => {
   const feedKey = req.params.id;
@@ -20,7 +20,18 @@ const turnOff = async (req, res) => {
   }
 };
 
+const setFanSpeed = async (req, res) => {
+  const  deviceId = req.params.id;
+  const  value  = req.body.value;
+  try {
+    const data = await updateFanSpeed(deviceId,value);
+    res.status(200).json({ message: 'Thiết bị đã tắt', data });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi khi tắt thiết bị', error: error.message });
+  }
+}
 module.exports = {
   turnOn,
-  turnOff
+  turnOff,
+  setFanSpeed
 };

@@ -3,7 +3,7 @@ const router = express.Router()
 
 const eventController = require('../controllers/EventController');
 
-// router.get('/:id', eventController.getAllEvents)
+// router.get('/:id', eventController.getEvent)
 
 module.exports = router
 

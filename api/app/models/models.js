@@ -20,6 +20,7 @@ const DeviceSchema = new mongoose.Schema({
   deviceName: { type: String, required: true },
   room_id: { type: String, ref: 'Room' },
   status: { type: Boolean, default: false },
+  value : {type : Number, default : 0},
 });
 
 const EnergyLogSchema = new mongoose.Schema({
@@ -69,7 +70,30 @@ const VoltageLogSchema = new mongoose.Schema({
   device_id: { type: String, ref: 'Device' },
 });
 
-
+const ThresholdSchema = new mongoose.Schema({
+  threshold: {
+    type: Number,
+    required: true
+  },
+  room_id: {
+    type: String,
+    ref: 'Room',
+    required: true
+  },
+  devices: [
+    {
+      device_id: {
+        type: String,
+        ref: 'Device'
+      },
+      value: {
+        type: Number,
+        default: null
+      }
+    }
+  ]
+});
+const Threshold = mongoose.model("Threshold", ThresholdSchema);
 const Account = mongoose.model("Account", AccountSchema);
 const Device = mongoose.model("Device", DeviceSchema);
 const Room = mongoose.model("Room", RoomSchema);
@@ -90,5 +114,6 @@ module.exports = {
   TempatureLog,
   Calendar,
   AmperageLog,
-  VoltageLog
+  VoltageLog, 
+  Threshold
 };

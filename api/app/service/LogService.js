@@ -1,9 +1,9 @@
-const {Device ,EnergyLog, TempatureLog, LightLog, AmperageLog, VoltageLog} = require("../models/models");
+const { Device, EnergyLog, TempatureLog, LightLog, AmperageLog, VoltageLog } = require("../models/models");
 
 const getAllDeviceEnergyLog = async (device_id) => {
   try {
-    // Fetch logs filtered by device_id
-    const logs = await EnergyLog.find({ device_id: device_id });
+    // Fetch logs filtered by device_id, sorted by date in descending order, limit to 12
+    const logs = await EnergyLog.find({ device_id }).sort({ date: -1 }).limit(12);
 
     // Fetch device details and combine with logs
     const detailedLogs = await Promise.all(logs.map(async (log) => {
@@ -27,10 +27,10 @@ const getAllDeviceEnergyLog = async (device_id) => {
       return acc;
     }, {});
 
-    // Format the result as an array of objects with name and data
+    // Format the result as an array of objects with name and data, reversed to have the oldest first
     const result = Object.keys(groupedLogs).map(name => ({
       name,
-      data: groupedLogs[name]
+      data: groupedLogs[name].reverse() // Reverse the data array for each device name
     }));
 
     return result;
@@ -42,8 +42,8 @@ const getAllDeviceEnergyLog = async (device_id) => {
 
 const getAllDeviceVoltageLog = async (device_id) => {
   try {
-    // Fetch logs filtered by device_id
-    const logs = await VoltageLog.find({ device_id: device_id });
+    // Fetch logs filtered by device_id, sorted by date in descending order, limit to 12
+    const logs = await VoltageLog.find({ device_id }).sort({ date: -1 }).limit(12);
 
     // Fetch device details and combine with logs
     const detailedLogs = await Promise.all(logs.map(async (log) => {
@@ -67,10 +67,10 @@ const getAllDeviceVoltageLog = async (device_id) => {
       return acc;
     }, {});
 
-    // Format the result as an array of objects with name and data
+    // Format the result as an array of objects with name and data, reversed to have the oldest first
     const result = Object.keys(groupedLogs).map(name => ({
       name,
-      data: groupedLogs[name]
+      data: groupedLogs[name].reverse() // Reverse the data array for each device name
     }));
 
     return result;
@@ -82,8 +82,8 @@ const getAllDeviceVoltageLog = async (device_id) => {
 
 const getAllDeviceAmperageLog = async (device_id) => {
   try {
-    // Fetch logs filtered by device_id
-    const logs = await AmperageLog.find({ device_id: device_id });
+    // Fetch logs filtered by device_id, sorted by date in descending order, limit to 12
+    const logs = await AmperageLog.find({ device_id }).sort({ date: -1 }).limit(12);
 
     // Fetch device details and combine with logs
     const detailedLogs = await Promise.all(logs.map(async (log) => {
@@ -107,10 +107,10 @@ const getAllDeviceAmperageLog = async (device_id) => {
       return acc;
     }, {});
 
-    // Format the result as an array of objects with name and data
+    // Format the result as an array of objects with name and data, reversed to have the oldest first
     const result = Object.keys(groupedLogs).map(name => ({
       name,
-      data: groupedLogs[name]
+      data: groupedLogs[name].reverse() // Reverse the data array for each device name
     }));
 
     return result;
@@ -120,14 +120,14 @@ const getAllDeviceAmperageLog = async (device_id) => {
   }
 };
 
-
 const getAllDeviceTemperatureLog = async (room_id) => {
   try {
-    const logs = await TempatureLog.find({ room_id: room_id });
+    // Fetch logs filtered by room_id, sorted by date in descending order, limit to 12
+    const logs = await TempatureLog.find({ room_id }).sort({ date: -1 }).limit(12);
     const result = logs.map(log => ({
-      date : log.date,
+      date: log.date,
       data: log.temperature
-    }));
+    })).reverse(); // Reverse the array to have the oldest first
 
     return result;
   } catch (error) {
@@ -138,11 +138,12 @@ const getAllDeviceTemperatureLog = async (room_id) => {
 
 const getAllDeviceLightLog = async (room_id) => {
   try {
-    const logs = await LightLog.find({ room_id: room_id });
+    // Fetch logs filtered by room_id, sorted by date in descending order, limit to 12
+    const logs = await LightLog.find({ room_id }).sort({ date: -1 }).limit(12);
     const result = logs.map(log => ({
-      date : log.date,
+      date: log.date,
       data: log.light
-    }));
+    })).reverse(); // Reverse the array to have the oldest first
 
     return result;
   } catch (error) {
@@ -151,4 +152,4 @@ const getAllDeviceLightLog = async (room_id) => {
   }
 };
 
-module.exports = { getAllDeviceEnergyLog, getAllDeviceLightLog, getAllDeviceTemperatureLog , getAllDeviceAmperageLog, getAllDeviceVoltageLog };
+module.exports = { getAllDeviceEnergyLog, getAllDeviceLightLog, getAllDeviceTemperatureLog, getAllDeviceAmperageLog, getAllDeviceVoltageLog };
